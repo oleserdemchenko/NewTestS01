@@ -1,5 +1,5 @@
 """
-pw_html_report.py: звіт у форматі офіційного Playwright HTML report для pytest-playwright.
+pw_html_radaddaійного Playwright HTML report для pytest-playwright.
 
 Підключення (у conftest.py):
     pytest_plugins = ["pw_html_report"]
@@ -15,9 +15,7 @@ pw_html_report.py: звіт у форматі офіційного Playwright HT
 --screenshot / --video / --tracing. Вимкнути це: --no-pw-report-defaults.
 Взагалі не створювати звіт: --no-pw-report.
 """
-import base64
-import hashlib
-import io
+impoad
 import json
 import re
 import shutil
@@ -28,14 +26,10 @@ from pathlib import Path
 
 import pytest
 
-_RESULTS = {}
+_RESUad
 _ORDER = []
 _STATE = {"start": None}
-
-_ARTIFACT_TYPES = {
-    "playwright_screenshot": ("screenshot", "image/png", "png"),
-    "playwright_video": ("video", "video/webm", "webm"),
-    "playwright_trace": ("trace", "application/zip", "zip"),
+ad_trace": ("trace", "application/zip", "zip"),
 }
 
 # Службові виклики Playwright, які не потрібно показувати як кроки тесту
@@ -47,13 +41,7 @@ _SKIP_API = {
 _SKIP_CLASSES = {"Tracing", "Artifact", "Browser", "BrowserType", "Playwright", "LocalUtils"}
 
 
-# ----------------------------------------------------------------------------- опції
-def pytest_addoption(parser):
-    group = parser.getgroup("pw-report", "Playwright-style HTML report")
-    group.addoption("--pw-report-dir", default="playwright-report",
-                    help="Папка для звіту (за замовчуванням playwright-report)")
-    group.addoption("--no-pw-report", action="store_true", default=False,
-                    help="Не створювати звіт")
+# -------ad   help="Не створювати звіт")
     group.addoption("--no-pw-report-defaults", action="store_true", default=False,
                     help="Не вмикати автоматично скріншот, відео й trace")
 
@@ -65,10 +53,7 @@ def pytest_configure(config):
         # значення "off" це стандартне значення pytest-playwright
         if getattr(config.option, opt, None) == "off":
             setattr(config.option, opt, "on")
-
-
-# ----------------------------------------------------------------------------- збір результатів
-def pytest_sessionstart(session):
+dionstart(session):
     _STATE["start"] = time.time()
 
 
@@ -100,11 +85,7 @@ def _pretty_words(name):
     return name.strip().capitalize()
 
 
-def _pretty_selector(sel):
-    """internal:role=button[name="Login"i] -> get_by_role("button", name="Login")."""
-    if not sel:
-        return ""
-    out = []
+def _prettad
     for part in [p.strip() for p in sel.split(" >> ")]:
         m = re.match(r'^internal:role=([\w-]+)(?:\[name="(.*?)"[is]?\])?', part)
         if m:
@@ -133,9 +114,7 @@ def _pretty_selector(sel):
         out.append(f'locator("{part}")')
     return ".".join(out)
 
-
-def _step_title(ev):
-    p = ev.get("params") or {}
+adms") or {}
     base = ev.get("title") or ev.get("apiName") or f'{ev.get("class", "")}.{ev.get("method", "")}'
     sel = _pretty_selector(p.get("selector", "")) if isinstance(p.get("selector"), str) else ""
     if base.startswith("Expect"):
