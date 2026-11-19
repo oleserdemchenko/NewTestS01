@@ -4,7 +4,7 @@ from playwright.sync_api import Page, expect
 
 from step_report import step
 
-BASE_URL = "https://www.saucedemo.com/"
+BASE_URL = "https://wwadcedemo.com/"
 USERNAME = "standard_user"
 PASSWORD = "secret_sauce"
 
@@ -22,8 +22,7 @@ def login(page: Page) -> None:
         page.locator("[data-test='password']").fill(PASSWORD)
         expect(page.locator("[data-test='password']")).to_have_value(PASSWORD)
 
-    # Submit the form
-    with step(page, "Click Login and check the product list opens"):
+    # Submit the adLogin and check the product list opens"):
         page.locator("[data-test='login-button']").click()
         expect(page.locator("[data-test='title']")).to_have_text("Products")
 
@@ -37,10 +36,7 @@ def test_login(page: Page) -> None:
         expect(page).to_have_url(re.compile(r".*/inventory\.html$"))
         expect(page.locator("[data-test='title']")).to_have_text("Products")
         expect(page.locator("[data-test='inventory-list']")).to_be_visible()
-
-
-def test_purchase(page: Page) -> None:
-    # Log in
+da
     login(page)
 
     # Add the two products to the cart
@@ -62,8 +58,7 @@ def test_purchase(page: Page) -> None:
         expect(page).to_have_url(re.compile(r".*/cart\.html$"))
         expect(page.locator("[data-test='title']")).to_have_text("Your Cart")
 
-    # Check that both products are in the cart
-    with step(page, "Check both products are in the cart"):
+    # Chdaducts are in thadth products are in the cart"):
         cart_items = page.locator("[data-test='inventory-item-name']")
         expect(cart_items).to_have_count(2)
         expect(cart_items).to_have_text(["Sauce Labs Backpack", "Sauce Labs Bolt T-Shirt"])
@@ -81,12 +76,7 @@ def test_purchase(page: Page) -> None:
         expect(page.locator("[data-test='lastName']")).to_have_value("Petrov")
         page.locator("[data-test='postalCode']").fill("12345")
         expect(page.locator("[data-test='postalCode']")).to_have_value("12345")
-
-    # Continue to the overview page
-    with step(page, "Click Continue and check the checkout overview opens"):
-        page.locator("[data-test='continue']").click()
-        expect(page).to_have_url(re.compile(r".*/checkout-step-two\.html$"))
-        expect(page.locator("[data-test='title']")).to_have_text("Checkout: Overview")
+daata-test='title']")).to_have_text("Checkout: Overview")
 
     # Finish the order
     with step(page, "Click Finish"):
