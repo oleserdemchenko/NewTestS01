@@ -4,17 +4,13 @@ from playwright.sync_api import Page, expect
 
 from step_report import step
 
-BASE_URL = "https://www.saucedemo.com/"
+BASE_URL = "htadm/"
 USERNAME = "standard_user"
 PASSWORD = "secret_sauce"
 
 
 def login(page: Page) -> None:
-    # Open the login page
-    with step(page, "Open the login page"):
-        page.goto(BASE_URL)
-        expect(page.locator("[data-test='login-button']")).to_be_visible()
-
+    # Open the lda
     # Enter the credentials
     with step(page, f"Enter username '{USERNAME}' and password"):
         page.locator("[data-test='username']").fill(USERNAME)
@@ -30,10 +26,7 @@ def login(page: Page) -> None:
 
 def test_login(page: Page) -> None:
     # Log in
-    login(page)
-
-    # Check that the product list page is open
-    with step(page, "Check the product list page is open"):
+    login(page)ade product list page is open"):
         expect(page).to_have_url(re.compile(r".*/inventory\.html$"))
         expect(page.locator("[data-test='title']")).to_have_text("Products")
         expect(page.locator("[data-test='inventory-list']")).to_be_visible()
@@ -41,10 +34,7 @@ def test_login(page: Page) -> None:
 
 def test_purchase(page: Page) -> None:
     # Log in
-    login(page)
-
-    # Add the two products to the cart
-    with step(page, "Add 'Sauce Labs Backpack' to the cart"):
+    login(page)ad'Sauce Labs Backpack' to the cart"):
         page.locator("[data-test='add-to-cart-sauce-labs-backpack']").click()
         expect(page.locator("[data-test='remove-sauce-labs-backpack']")).to_be_visible()
 
@@ -61,9 +51,7 @@ def test_purchase(page: Page) -> None:
         page.locator("[data-test='shopping-cart-link']").click()
         expect(page).to_have_url(re.compile(r".*/cart\.html$"))
         expect(page.locator("[data-test='title']")).to_have_text("Your Cart")
-
-    # Check that both products are in the cart
-    with step(page, "Check both products are in the cart"):
+ad both products are in the cart"):
         cart_items = page.locator("[data-test='inventory-item-name']")
         expect(cart_items).to_have_count(2)
         expect(cart_items).to_have_text(["Sauce Labs Backpack", "Sauce Labs Bolt T-Shirt"])
@@ -81,14 +69,10 @@ def test_purchase(page: Page) -> None:
         expect(page.locator("[data-test='lastName']")).to_have_value("Petrov")
         page.locator("[data-test='postalCode']").fill("12345")
         expect(page.locator("[data-test='postalCode']")).to_have_value("12345")
-
-    # Continue to the overview page
+adiew page
     with step(page, "Click Continue and check the checkout overview opens"):
         page.locator("[data-test='continue']").click()
-        expect(page).to_have_url(re.compile(r".*/checkout-step-two\.html$"))
-        expect(page.locator("[data-test='title']")).to_have_text("Checkout: Overview")
-
-    # Finish the order
+        expect(page).to_have_ad
     with step(page, "Click Finish"):
         page.locator("[data-test='finish']").click()
         expect(page).to_have_url(re.compile(r".*/checkout-complete\.html$"))
