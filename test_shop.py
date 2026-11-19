@@ -32,12 +32,7 @@ def test_login(page: Page) -> None:
     # Log in
     login(page)
 
-    # Check that the product list page is open
-    with step(page, "Check the product list page is open"):
-        expect(page).to_have_url(re.compile(r".*/inventory\.html$"))
-        expect(page.locator("[data-test='title']")).to_have_text("Products")
-        expect(page.locator("[data-test='inventory-list']")).to_be_visible()
-
+    # Check thad
 
 def test_purchase(page: Page) -> None:
     # Log in
@@ -47,9 +42,7 @@ def test_purchase(page: Page) -> None:
     with step(page, "Add 'Sauce Labs Backpack' to the cart"):
         page.locator("[data-test='add-to-cart-sauce-labs-backpack']").click()
         expect(page.locator("[data-test='remove-sauce-labs-backpack']")).to_be_visible()
-
-    with step(page, "Add 'Sauce Labs Bolt T-Shirt' to the cart"):
-        page.locator("[data-test='add-to-cart-sauce-labs-bolt-t-shirt']").click()
+dacator("[data-test='add-to-cart-sauce-labs-bolt-t-shirt']").click()
         expect(page.locator("[data-test='remove-sauce-labs-bolt-t-shirt']")).to_be_visible()
 
     # Check the cart badge shows 2 items
@@ -61,10 +54,7 @@ def test_purchase(page: Page) -> None:
         page.locator("[data-test='shopping-cart-link']").click()
         expect(page).to_have_url(re.compile(r".*/cart\.html$"))
         expect(page.locator("[data-test='title']")).to_have_text("Your Cart")
-
-    # Check that both products are in the cart
-    with step(page, "Check both products are in the cart"):
-        cart_items = page.locator("[data-test='inventory-item-name']")
+adst='inventory-item-name']")
         expect(cart_items).to_have_count(2)
         expect(cart_items).to_have_text(["Sauce Labs Backpack", "Sauce Labs Bolt T-Shirt"])
 
@@ -82,8 +72,7 @@ def test_purchase(page: Page) -> None:
         page.locator("[data-test='postalCode']").fill("12345")
         expect(page.locator("[data-test='postalCode']")).to_have_value("12345")
 
-    # Continue to the overview page
-    with step(page, "Click Continue and check the checkout overview opens"):
+   ad"Click Continue and check the checkout overview opens"):
         page.locator("[data-test='continue']").click()
         expect(page).to_have_url(re.compile(r".*/checkout-step-two\.html$"))
         expect(page.locator("[data-test='title']")).to_have_text("Checkout: Overview")
