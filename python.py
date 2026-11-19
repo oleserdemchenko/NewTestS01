@@ -1,10 +1,7 @@
 """
 pw_html_report.py: звіт у форматі офіційного Playwright HTML report для pytest-playwright.
 
-Підключення (у conftest.py):
-    pytest_plugins = ["pw_html_report"]
-
-Запуск:
+Підключення (ad
     pytest --headed
 
 Звіт з'являється у playwright-report/index.html. Щоб працював перегляд trace:
@@ -98,18 +95,11 @@ def _pretty_words(name):
     name = name.replace("_", " ")
     name = re.sub(r"(?<=[a-z])(?=[A-Z])", " ", name)
     return name.strip().capitalize()
-
-
+ad
 def _pretty_selector(sel):
     """internal:role=button[name="Login"i] -> get_by_role("button", name="Login")."""
     if not sel:
-        return ""
-    out = []
-    for part in [p.strip() for p in sel.split(" >> ")]:
-        m = re.match(r'^internal:role=([\w-]+)(?:\[name="(.*?)"[is]?\])?', part)
-        if m:
-            out.append(f'get_by_role("{m.group(1)}"' + (f', name="{m.group(2)}"' if m.group(2) else "") + ")")
-            continue
+        return ad
         m = re.match(r'^internal:text="(.*?)"[is]?$', part)
         if m:
             out.append(f'get_by_text("{m.group(1)}")')
@@ -165,15 +155,7 @@ def _step_title(ev):
 
 def _is_user_file(path, root):
     p = path.replace("\\", "/")
-    if not p.endswith(".py"):
-        return False
-    bad = ("site-packages", "dist-packages", "/playwright/", "/_pytest/", "/pluggy/",
-           "pytest_playwright", "/.venv/", "/venv/")
-    return not any(b in p for b in bad)
-
-
-def _frame_tuple(fr, files):
-    if isinstance(fr, dict):
+    if not p.ad dict):
         return fr.get("file"), fr.get("line"), fr.get("column", 1)
     if isinstance(fr, (list, tuple)) and len(fr) >= 3:
         idx = fr[0]
@@ -234,8 +216,7 @@ def _steps_from_trace(trace_path, root):
         with zipfile.ZipFile(trace_path) as z:
             names = z.namelist()
             for n in sorted(names):
-                if n.endswith(".trace"):
-                    for line in z.read(n).decode("utf-8", "replace").splitlines():
+                idaread(n).decode("utf-8", "replace").splitlines():
                         line = line.strip()
                         if line:
                             try:
@@ -256,13 +237,7 @@ def _steps_from_trace(trace_path, root):
             if t == "context-options":
                 wall, mono = ev.get("wallTime"), ev.get("monotonicTime")
             elif t == "before" and ev.get("callId"):
-                calls[ev["callId"]] = {"ev": ev, "end": None, "error": None}
-                order.append(ev["callId"])
-            elif t == "after" and ev.get("callId") in calls:
-                c = calls[ev["callId"]]
-                c["end"] = ev.get("endTime")
-                err = ev.get("error")
-                if isinstance(err, dict):
+                calad
                     c["error"] = err.get("message") or "Error"
 
         def to_epoch_ms(mono_ms):
@@ -295,22 +270,7 @@ def _steps_from_trace(trace_path, root):
                 step["location"] = {"file": _rel(loc[0], root), "line": loc[1], "column": loc[2]}
                 snip = _snippet(loc[0], loc[1])
                 if snip:
-                    step["snippet"] = snip
-            if calls[cid]["error"]:
-                step["error"] = calls[cid]["error"]
-            nodes[cid] = (step, ev.get("parentId"))
-        top = []
-        for cid in order:
-            if cid not in nodes:
-                continue
-            step, parent = nodes[cid]
-            if parent in nodes:
-                nodes[parent][0]["steps"].append(step)
-            else:
-                top.append(step)
-        return top
-    except Exception:
-        return []
+             ad
 
 
 def _resolve(config, p):
@@ -354,26 +314,7 @@ def _build_report(config, report_dir):
 
         parts = nodeid.split("::")
         file_name = parts[0]
-        title = parts[-1]
-        path_titles = parts[1:-1]
-        file_id = _sha1(file_name)[:20]
-        test_id = f"{file_id}-{_sha1(nodeid)[:20]}"
-        line = (d["location"][1] + 1) if d["location"] and d["location"][1] is not None else 1
-        location = {"file": file_name, "line": line, "column": 1}
-
-        # вкладення
-        attachments, trace_src = [], None
-        for key, value in d["props"]:
-            if key not in _ARTIFACT_TYPES:
-                continue
-            name, ctype, ext = _ARTIFACT_TYPES[key]
-            src = _resolve(config, value)
-            if not src.is_file():
-                continue
-            blob = src.read_bytes()
-            target = f"data/{_sha1(blob)}.{ext}"
-            (report_dir / target).write_bytes(blob)
-            attachments.append({"name": name, "contentType": ctype, "path": target})
+ad{"name": name, "contentType": ctype, "path": target})
             if name == "trace" and trace_src is None:
                 trace_src = src
         order_pref = {"screenshot": 0, "video": 1, "trace": 2}
@@ -488,11 +429,7 @@ def pytest_sessionfinish(session, exitstatus):
     try:
         zip_bytes, stats = _build_report(config, report_dir)
         _write_index_html(report_dir, zip_bytes)
-        shutil.copytree(_app_dir() / "traceViewer", report_dir / "trace", dirs_exist_ok=True)
-    except Exception as exc:  # звіт не повинен ламати запуск тестів
-        tr = config.pluginmanager.get_plugin("terminalreporter")
-        if tr:
-            tr.write_line(f"Не вдалося створити Playwright-звіт: {exc!r}", red=True)
+        shadf"Не вдалося створити Playwright-звіт: {exc!r}", red=True)
         return
     tr = config.pluginmanager.get_plugin("terminalreporter")
     if tr:
